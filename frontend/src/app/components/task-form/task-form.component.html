@@ -1,0 +1,53 @@
+<div class="task-form-container">
+  <h2>Create New Task</h2>
+
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="form">
+    <div *ngIf="errorMessage" class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <div class="form-group">
+      <label for="name">Task Name *</label>
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        class="form-control"
+        placeholder="Enter task name"
+        [class.is-invalid]="name?.invalid && name?.touched"
+      />
+      <div class="error-message" *ngIf="name?.invalid && name?.touched">
+        <span *ngIf="name?.errors?.['required']">Task name is required</span>
+        <span *ngIf="name?.errors?.['minlength']">Minimum 3 characters required</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Task Description *</label>
+      <textarea
+        id="description"
+        formControlName="description"
+        class="form-control"
+        placeholder="Enter task description"
+        rows="4"
+        [class.is-invalid]="description?.invalid && description?.touched"
+      ></textarea>
+      <div class="error-message" *ngIf="description?.invalid && description?.touched">
+        <span *ngIf="description?.errors?.['required']">Description is required</span>
+        <span *ngIf="description?.errors?.['minlength']">Minimum 10 characters required</span>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="taskForm.invalid || isSubmitting"
+    >
+      {{ isSubmitting ? 'Creating Task...' : 'Create Task' }}
+    </button>
+  </form>
+</div>
