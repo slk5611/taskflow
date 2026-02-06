@@ -1,0 +1,75 @@
+<div class="task-list-container">
+  <h2>Task Queue Status</h2>
+
+  <div *ngIf="errorMessage" class="alert alert-error">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="isLoading && tasks.length === 0" class="loading">
+    <div class="spinner"></div>
+    <p>Loading tasks...</p>
+  </div>
+
+  <div *ngIf="tasks.length === 0 && !isLoading" class="empty-state">
+    <p>No tasks yet. Create one to get started!</p>
+  </div>
+
+  <div *ngIf="tasks.length > 0" class="task-table-wrapper">
+    <table class="task-table">
+      <thead>
+        <tr>
+          <th>Task ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Progress</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of tasks" [class.processing]="isProcessing(task)">
+          <td class="task-id" title="{{ task.id }}">{{ task.id.substring(0, 8) }}...</td>
+          <td class="task-name">{{ task.name }}</td>
+          <td class="task-desc">{{ task.description }}</td>
+          <td>
+            <span
+              class="status-badge"
+              [style.backgroundColor]="getStatusColor(task.status)"
+            >
+              {{ task.status }}
+            </span>
+          </td>
+          <td>
+            <div class="progress-bar-container">
+              <div class="progress-bar">
+                <div
+                  class="progress-fill"
+                  [style.width.%]="task.progress"
+                  [style.backgroundColor]="getStatusColor(task.status)"
+                ></div>
+              </div>
+              <span class="progress-text">{{ task.progress }}%</span>
+            </div>
+          </td>
+          <td class="created-at">{{ formatDate(task.createdAt) }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="task-details">
+      <div *ngFor="let task of tasks" class="task-card" *ngIf="task.status === 'completed' || task.status === 'failed'">
+        <h3>{{ task.name }}</h3>
+        <div class="task-info">
+          <p><strong>Status:</strong> {{ task.status }}</p>
+          <p *ngIf="task.error"><strong>Error:</strong> {{ task.error }}</p>
+          <p *ngIf="task.result && task.status === 'completed'">
+            <strong>Items Processed:</strong> {{ task.result.itemsProcessed }}
+          </p>
+          <p *ngIf="task.result && task.status === 'completed'">
+            <strong>Success Rate:</strong> {{ task.result.successRate }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

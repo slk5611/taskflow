@@ -1,0 +1,27 @@
+<div class="app-container">
+  <header class="app-header">
+    <div class="header-content">
+      <h1>{{ title }} System</h1>
+      <div class="status-indicator" [class.connected]="apiConnected" [class.offline]="!apiConnected">
+        <span class="status-dot"></span>
+        <span class="status-text">API {{ apiStatus }}</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="container">
+      <section class="section">
+        <app-task-form></app-task-form>
+      </section>
+
+      <section class="section">
+        <app-task-list></app-task-list>
+      </section>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <p>&copy; 2024 Taskflow System. All tasks are processed asynchronously using Redis.</p>
+  </footer>
+</div>
